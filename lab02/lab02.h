@@ -1,12 +1,25 @@
-#ifndef lab02.h
-#define lab02.h
+#pragma once 
+#include <iostream>
+#include <string>
+#define ROZMIAR 50
 
-bool fillVecWithFibonacci(vecN* vector, int x)
-void printVec(vecN *vector)
+using namespace std;
+
+
 
 struct vecM{
-  int N;
-}
+  int N=0;//rozmiar
+  int tab[ROZMIAR]={0};
+  struct vecM *malzonek=NULL;	
+};
 
-
-#endif
+void printVec(vecM *);
+bool fillVecWithFibonacci(vecM*, int);
+int fib(int);
+void revert(vecM *);
+void extend(vecM *, int);
+void truncate(vecM *, int);
+void checkVecSpouse(vecM*);
+void marry(vecM*,vecM*);
+void divorce(vecM*,vecM*);
+void swap(vecM*,vecM*);
