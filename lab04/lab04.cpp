@@ -1,86 +1,128 @@
 #include "lab04.h"
+#include <stdlib.h>
+#include <iostream>
 
-void printSequence(const double*sekwencja,int rozmiar)
+
+void printSequence(const double*ciag , int size)
 {
+  (*wsk_nPrints)++;
 
-	if(rozmiar>0)
-	{
-		std::cout<<"(";
-		for(int i=0;i<rozmiar;i++)
-		{
-			std::cout<<sekwencja[i]<<",";
-		}
-		std::cout<<"\b)\n";
-	}
-	else 
-	{
-	std::cout<<"Nothing to print.";
-	return;
-	}
-
+ if(size<=0 || !(ciag)) 
+  {
+    std::cout << "Nothing to print." << std::endl;
+    return;
+  }
+  else 
+  {
+    printf("(");
+      for (int i=0;i<size;i++)
+      {
+        std::cout<<ciag[i]<<", ";
+      }
+      printf("\b\b)\n");
+  }
 }
 
- double*  initGeometricalSequence(double pierwszy , double liczba, int rozmiar )
- {
-	 if(rozmiar==0)
-	 {
-		 std::cout<<"Nothing to print.\n";
-	 }
-
-	 else{
-		double *tab=(double*)malloc(sizeof(double)*rozmiar);
-		tab[0]=pierwszy;
-		for(int i=1;i<rozmiar;i++)
-		{
-			tab[i]=tab[i-1]*liczba;
-		}
-		return tab;
-	 }
-	 
- }
-
-void initCounter(int *x)
+double* initGeometricalSequence(double start, double q, int size)
 {
-	if(*x==0 || *x<0)
-	{
-		std::cout<<"Size must be non-zero(and postivite)";
-	}
+  if (size == 0)
+  {
+    puts("Size must be non-zero (and positive)");
+    return  NULL;
+  }
+
+  double *wsk = (double*) malloc(size*sizeof(double));
+
+  if(wsk == NULL)
+  {
+    puts("ERROR wsk");
+    exit(1);
+  }
+
+  
+  wsk[0]=start;
+  for(int i=1; i<size; i++)
+  {
+      wsk[i]= wsk[i-1]*q;
+  }
+  return wsk;
 }
 
-double* initArithmeticSequence(double pierwszy ,double liczba ,int rozmiar)
+void initCounter(int* x)
 {
-	double *tablica=(double*)malloc(sizeof(double)*rozmiar);
-	tablica[0]=pierwszy;
-	for(int i=1;i<rozmiar; i++)
-	{
-		tablica[i]=tablica[i-1]+liczba;
-	}
-	return tablica;
+  wsk_nPrints =x;
 }
 
-void addSequence(const double ***, double **, double*,int)
+double* initArithmeticSequence(double start, double r, int size)
 {
+  if (size <= 0)
+  {
+    puts("Size must be non-zero (and positive)");
+    return  NULL;
+  }
+
+  double *wsk = (double*)malloc(size*sizeof(double));
+
+  if(wsk == NULL)
+  {
+    puts("ERROR wsk");
+    exit(1);
+  }
+
+  *wsk = start;
+  for(int i=1; i<size; i++)
+  {
+      wsk[i]= wsk[i-1] + r;
+  }
+  return wsk;
 }
 
-void deleteSequence(const double**sekwencja)
+void addSequence(double const ***lista_ciagow,  double **lista_dlugosci, double const* ciag, int roz)
 {
-	if(*sekwencja != NULL)
-	{
-		free((void*)*sekwencja);
-		*sekwencja=NULL;
-		std::cout<<"Sequence deleted.\n";
-	}
-	else{
-		std::cout<<"Nothing to delete.\n";
-	}
-}
+    
+    *lista_dlugosci=(double*) realloc(*lista_dlugosci, (count+1) * sizeof(double*));
+    (*lista_dlugosci)[count] = roz;
 
-void printAllSequences(const double**,double*)
-{
+    *lista_ciagow=(const double**) realloc(*lista_ciagow, (count+1) * sizeof(const double**));
+    (*lista_ciagow)[ count] = ciag;
+
+    count++;
 }
 
 
-void deleteAllSequences(const double**,double*)
+void deleteSequence(const double**list)
 {
+
+  if(!(*list))
+  {
+    std::cout << "Nothing to delete." << std::endl;
+    return;
+  }
+
+  free( (double*)*list );
+  *list=NULL;
+
+  std::cout << "Sequence deleted." << std::endl;
 }
 
+
+
+void printAllSequences(const double **list, double *dlugosci)
+{
+  for(int j=0;j<6;j++)
+  {
+    printSequence( list[j], (int)dlugosci[j] );
+  }
+}
+
+void deleteAllSequences(const double **list, double *dlugosci)
+{
+  for(int j=0;j<count;j++)
+    {
+      deleteSequence( list+count);
+      free( (double*)list[count] );
+    }
+  free(list);
+  free(dlugosci);
+  dlugosci = NULL;
+}

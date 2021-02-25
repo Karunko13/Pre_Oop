@@ -40,6 +40,7 @@ int main(){
   deleteAllSequences(sequencesList, sequencesLenghtsList);
 
   std::cout << "Printing function was invoked " << nPrints << " times." << std::endl;
+  
 }
 
 /*
